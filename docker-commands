@@ -21,3 +21,16 @@ docker run --name mongo-db -d --rm -v data:/data/db --network goals-net mongo
 # Commands for starting mongo-db with with security
 docker stop mongo-db
 docker run --name mongo-db -d --rm --network goals-net -e MONGO_INITDB_ROOT_USERNAME=arun -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+
+# Comman for bind mounts, anonymous volume and volumes
+# Bind mount for all the code, so that local code changes get reflected in container immediatley
+# Named volume for logs
+# Anonymous volum for node module
+# Longer volume paths take precedence, hence logs and mode_modules will not get over written
+docker stop goals-backend
+docker run --name goals-backend -p 80:80 -d --rm --network goals-net -v C:/Users/arunk/OneDrive/Documents/Repository/multi-01-starting-setup/backend:/app -v logs:/app/logs -v /app/node_modules goals-nod
+
+# Utilizing environment variables and overriding the default values, default values in docker file
+docker stop goals-backend
+docker build -t goals-nod  . 
+docker run --name goals-backend -p 80:80 -d --rm --network goals-net -v C:/Users/arunk/OneDrive/Documents/Repository/multi-01-starting-setup/backend:/app -v logs:/app/logs -v /app/node_modules -e MONGODB_USERNAME=arun -e MONGODB_PASSWORD=admin goals-nod
