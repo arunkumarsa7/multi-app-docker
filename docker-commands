@@ -1,0 +1,15 @@
+docker network create goals
+docker network rm goals
+docker network create goals-net
+docker network ls
+
+docker run --name mongo-db -d --rm --network goals-net mongo
+
+docker build -t goals-react .
+docker run --name goals-frontend -d -p 3000:3000 --rm goals-react
+
+docker build -t goals-nod  .
+docker run --name goals-backend -p 80:80 -d --rm --network goals-net goals-nod
+
+docker ps
+docker stop goals-backend
