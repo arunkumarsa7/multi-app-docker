@@ -13,3 +13,11 @@ docker run --name goals-backend -p 80:80 -d --rm --network goals-net goals-nod
 
 docker ps
 docker stop goals-backend
+
+# Commands for volume for data persistence
+docker stop mongo-db
+docker run --name mongo-db -d --rm -v data:/data/db --network goals-net mongo
+
+# Commands for starting mongo-db with with security
+docker stop mongo-db
+docker run --name mongo-db -d --rm --network goals-net -e MONGO_INITDB_ROOT_USERNAME=arun -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
